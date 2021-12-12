@@ -16,6 +16,19 @@ if __name__ == "__main__":
     print(divisors(7))
 
 
+# Clever solution 
+def divisors(num):
+    l = [a for a in range(2,num) if num%a == 0]
+    if len(l) == 0:
+        return str(num) + " is prime"
+    return l
+
+
+# Second rated solution 
+def divisors(n):
+    return [i for i in xrange(2, n) if not n % i] or '%d is prime' % n
+    
+
 # Test cases
 import codewars_test as test
 from solution import divisors
