@@ -51,25 +51,6 @@ def ini_array_aproach2(_str1, _str2):
 
 def calc_lcs_approach2(array_i, array_j, array_to_calc):
     ii = 1
-    for i in array_i:
-        jj = 1
-        for j in array_j:
-            if i == j:
-                array_to_calc[ii][jj] = array_to_calc[ii - 1][jj - 1] + 1
-            else:
-                array_to_calc[ii][jj] = max(array_to_calc[ii - 1][jj], array_to_calc[ii][jj - 1])
-            if jj + 1 < len(array_j):
-                jj += 1
-            else:
-                break
-        if ii + 1 < len(array_i):
-            ii += 1
-        else:
-            break
-
-
-def calc_lcs_approach2(array_i, array_j, array_to_calc):
-    ii = 1
     for i in range(1, len(array_i)):
         jj = 1
         for j in range(1, len(array_j)):
@@ -86,11 +67,36 @@ def calc_lcs_approach2(array_i, array_j, array_to_calc):
         else:
             break
 
-    for i in range(len(array_i), 0, -1):
-        to_print = ""
-        for j in range(len(array_j), 0, -1):
-            to_print += str(array_to_calc[i - 1][j - 1]) + " "
-        print(to_print)
+    index_i = len(array_i) - 1
+    index_j = len(array_j) - 1
+    _lcs = ""
+
+    while True:
+        if index_i == 0 or index_j == 0:
+            break
+        val_i = array_i[index_i]
+        val_j = array_j[index_j]
+
+        if val_i == val_j:
+            _lcs = val_i + _lcs
+            # _lcs.insert(0, val_i)
+            index_j -= 1
+            index_i -= 1
+        else:
+            left_diagonal = array_to_calc[index_i][index_j - 1]
+            right_diagonal = array_to_calc[index_i - 1][index_j]
+
+            if left_diagonal > right_diagonal:
+                index_j -= 1
+            else:
+                index_i -= 1
+
+    return _lcs
+    # for i in range(len(array_i), 0, -1):
+    #     to_print = ""
+    #     for j in range(len(array_j), 0, -1):
+    #         to_print += str(array_to_calc[i - 1][j - 1]) + " "
+    #     print(to_print)
 
 
 
@@ -105,33 +111,39 @@ def pretty_print_approach2(columns, rows, lcs_array):
         print(to_print)
 
 
+def lcs(x, y):
+    """Clever solution"""
+    if len(x) == 0 or len(y) == 0:
+        return ''
+    if x[-1] == y[-1]:
+        return lcs(x[:-1], y[:-1]) + x[-1]
+    else:
+        lcs1 = lcs(x,y[:-1])
+        lcs2 = lcs(x[:-1],y)
+        if len(lcs1) > len(lcs2):
+            return lcs1
+        else:
+            return lcs2
+
 if __name__ == "__main__":
     # str1 = str(input("String 1 please:"))
     # str2 = str(input("String 2 please:"))
     str2 = "ABCBDAB"
     str1 = "BDCAB"
 
-    # str1 = "AGGTAB"
-    # str2 = "GXTXAYB"
+    str1 = "132535365"
+    str2 ="123456789"
+    #
+    # str2 = "AGGTAB"
+    # str1 = "GXTXAYB"
 
-    # print(str1)
-    # print(str2)
-    #
-    # arr = ini_array(str1, str2)
-    #
-    # print()
-    # print()
-    # print(arr)
-    # print()
-    # print()
-    # pretty_print(arr)
-    # calc_lcs_array(arr)
-    # pretty_print(arr)
+    # str1 = "a"
+    # str2 = "b"
+
     i, j, _array = ini_array_aproach2(str1, str2)
-    print(i)
-    print(j)
+
+
+    # calc_lcs_approach2(i, j, _array)
     # pretty_print(_array)
-    # pretty_print_approach2(j, i, _array)
-    calc_lcs_approach2(i, j, _array)
-    print("JEJE")
-    # pretty_print(_array)
+
+    print(lcs(str1, str2))
